@@ -2,8 +2,9 @@
 # Общая подготовка Android-проекта (используется и для запасной сборки без виджетов)
 set -e
 npx cap add android
-npx @capacitor/assets@3.0.5 generate --android --iconBackgroundColor '#0E0C16' --iconBackgroundColorDark '#0E0C16' || true
+# Launcher icons are installed deterministically after Capacitor sync by set_launcher_icon.py.
 npx cap sync android
+python3 native/set_launcher_icon.py
 mkdir -p ~/.android && cp debug.keystore ~/.android/debug.keystore
 sed -i "s/versionCode 1/versionCode ${GITHUB_RUN_NUMBER:-1}/" android/app/build.gradle
 sed -i 's/versionName "1.0"/versionName "1.0.4"/' android/app/build.gradle
